@@ -6,6 +6,8 @@ from schemas.users import UserRequest
 
 from config.db_conf import get_db
 from crud import users
+from utils.response import success_response
+from schemas.users import UserAuthResponse,UserInfoResponse
 
 router = APIRouter(prefix="/api/users", tags=["users"])
 
@@ -31,3 +33,5 @@ async def register(user_data:UserRequest,db:AsyncSession=Depends(get_db)):
     #         }
     #     }
     # }
+    response_data=UserAuthResponse(token=token,user_info=UserInfoResponse.model_validate(user))
+    return success_response(message="注册成功",data=response_data)
