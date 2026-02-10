@@ -18,16 +18,16 @@ async def register(user_data:UserRequest,db:AsyncSession=Depends(get_db)):
     token=await users.create_token(db, user.id)
 
 
-    return {
-        "code":200,
-        "message":"user registered",
-        "data":{
-        "token":token,
-        "userInfo":{
-            "id":user.id,
-            "username":user.username,
-            "bio":user.bio,
-            "avatar":user.avatar
-            }
-        }
-    }
+    # return {
+    #     "code":200,
+    #     "message":"user registered",
+    #     "data":{
+    #     "token":token,
+    #     "userInfo":{
+    #         "id":user.id,
+    #         "username":user.username,
+    #         "bio":user.bio,
+    #         "avatar":user.avatar
+    #         }
+    #     }
+    # }
