@@ -1,0 +1,46 @@
+# 默认忽略的文件
+/shelf/
+/workspace.xml
+# 已忽略包含查询文件的默认文件夹
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# 基于编辑器的 HTTP 客户端请求
+/httpRequests/
+# Python 调试缓存
+pydevd_*
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code 缓存
+.vscode/
+telemetry.json
+*.exe
+
+# 虚拟环境（如果有 venv 目录）
+.venv/
+venv/
+# VS Code 配置和缓存
+.vscode/
+*.code-workspace
+
+# 系统/应用缓存文件
+*.db
+*.db-wal
+*.db-shm
+*.dll
+*.exe
+*.log
+*.ico
+*.dxccache
+*.json
+
+# 特定应用目录（如 Doubao）
+**/Doubao/
+**/AppData/Local/ConnectedDevices/
+
+# Git 配置
+.gitconfig
