@@ -39,4 +39,15 @@ async def register(user_data:UserRequest,db:AsyncSession=Depends(get_db)):
 
 @router.post("/login")
 async def login(user_data:UserRequest,db:AsyncSession=Depends(get_db)):
-    return success_response(message="成功登录")
+    user=await users.authenticate_user(db,user_data.username,user_data.password)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="用户名或密码错误")
+    token=await users.create_token(db,user.id)
+    response_data=UserAuthResponse(token=token,user_info=UserInfoResponse.model_validate(user))
+    return success_response(message="成功登录",data=response_data)
+
+
+#查token查用户-》封装crud-》功能整合成一个工具函数-》路由导入使用
+@router.get("/info")
+async def get_user_info():
+    return success_response(message="获取用户信息成功")
