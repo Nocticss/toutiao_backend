@@ -8,6 +8,7 @@ from config.db_conf import get_db
 from crud import users
 from utils.response import success_response
 from schemas.users import UserAuthResponse,UserInfoResponse
+from utils.auth import get_current_user
 
 router = APIRouter(prefix="/api/users", tags=["users"])
 
@@ -47,7 +48,7 @@ async def login(user_data:UserRequest,db:AsyncSession=Depends(get_db)):
     return success_response(message="成功登录",data=response_data)
 
 
-#查token查用户-》封装crud-》功能整合成一个工具函数-》路由导入使用
+#查token查用户-》封装crud-》功能整合成一个工具函数-》路由导入使用:依赖注入
 @router.get("/info")
-async def get_user_info():
-    return success_response(message="获取用户信息成功")
+async def get_user_info(user=Depends(get_current_user)):
+    return success_response(message="获取用户信息成功",data=UserInfoResponse.model_validate(user))
