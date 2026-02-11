@@ -45,3 +45,9 @@ async def create_token(db:AsyncSession,user_id:int):
 
     return token
 
+
+async def authenticate_user(db:AsyncSession,username:str,password:str):   #路由处理函数中调用
+    user=await get_user_by_username(db,username)
+    if not user:
+        return None
+    else:
