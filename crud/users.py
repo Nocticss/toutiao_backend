@@ -76,7 +76,7 @@ async def update_user(db:AsyncSession,username:str,user_data:UserUpdateRequest):
     # update().where(User.username==username).values(字段=值，字段=值)
     #user_data是一个pydantic类型，得到字典->*解包
     #没有设置值的不更新
-    query=update().where(User.username==username).values(**user_data.model_dump(
+    query=update(User).where(User.username==username).values(**user_data.model_dump(
         exclude_unset=True,
         exclude_none=True
     ))
@@ -91,4 +91,17 @@ async def update_user(db:AsyncSession,username:str,user_data:UserUpdateRequest):
     updated_user=await get_user_by_username(db,username)
     return updated_user
 
+#修改密码：验证旧密码 -> 新密码加密 -> 修改密码
+async def change_password(db:AsyncSession,user:User,old_password:str,new_password:str):
+    if not security.verify_password(old_password, user.password):
+        return False
+    
+    hashed_new_pwd = security.get_hash_password(new_password)
+    user.password = hashed_new_pwd
+    #更新:由SQLAlchemy真正接管这个User 对象，确保可以 commit
+    #规避 session 过期或关闭导致的不能提交的问题
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    return True
 
