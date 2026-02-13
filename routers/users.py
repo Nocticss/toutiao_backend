@@ -9,7 +9,7 @@ from crud import users
 from utils.response import success_response
 from schemas.users import UserAuthResponse,UserInfoResponse
 from utils.auth import get_current_user
-from schemas.users import UserUpdateRequest,UserChangePasswordReques
+from schemas.users import UserUpdateRequest,UserChangePasswordRequest
 
 router = APIRouter(prefix="/api/users", tags=["users"])
 
@@ -65,7 +65,7 @@ async def update_user_info(user_data:UserUpdateRequest,user=Depends(get_current_
 
 @router.put("/password")
 async def update_password(
-    password_data:UserChangePasswordReques,
+    password_data:UserChangePasswordRequest,
     user=Depends(get_current_user),
     db:AsyncSession=Depends(get_db)):
     res_change_pwd=await users.change_password(db,user.username,password_data.old_password,password_data.new_password)
